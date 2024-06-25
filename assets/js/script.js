@@ -1,3 +1,10 @@
+const botaoVoltar = document.querySelector('.voltar');
+const sectionDetalhesProduto = document.querySelector('.produto__detalhes');
+const sectionProdutos = document.querySelector('.produtos');
+
+botaoVoltar.style.display = 'none';
+sectionDetalhesProduto.style.display = 'none';
+
 const formatCurrency = (number) => {
     return number.toLocaleString('pt-BR', {
         style: 'currency',
@@ -26,8 +33,20 @@ const generateCard = async () => {
         </div>
         <h6>${formatCurrency(product.price)}</h6>`;
         const listaProdutos = document.querySelector('.lista__produtos');
-        listaProdutos.appendChild(card)
+        listaProdutos.appendChild(card);
+
+        card.addEventListener('click', () => {
+            sectionProdutos.style.display = 'none';
+            botaoVoltar.style.display = 'grid';
+            sectionDetalhesProduto.style.display = 'grid';
+        })
     });
 }
 
 generateCard();
+
+botaoVoltar.addEventListener('click', () => {
+    sectionProdutos.style.display = 'flex';
+    botaoVoltar.style.display = 'none';
+    sectionDetalhesProduto.style.display = 'none';
+})
