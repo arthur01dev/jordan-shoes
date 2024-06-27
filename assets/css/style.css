@@ -141,6 +141,10 @@ main {
 .card__produto_detalhes h4 {
     font-size: 18px;
     line-height: 28px;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card__produto_detalhes h5 {
