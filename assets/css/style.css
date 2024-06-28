@@ -319,6 +319,24 @@ main {
 .numeros {
     height: 40px;
     border: 1px solid #ccc;
+
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.numeros:hover {
+    border-color: var(--dark);
+    cursor: pointer;
+}
+
+.radio {
+    display: none;
+}
+
+.selecionado {
+    border-color: var(--dark);
 }
 
 .descricao {
@@ -338,9 +356,9 @@ main {
 details::marker,
 summary::marker {
     content: "";
-} 
+}
 
-summary{
+summary {
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
@@ -425,9 +443,9 @@ details a {
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 10px;
+    cursor: pointer;
 }
 
 .voltar:hover {
-    cursor: pointer;
     border: 1px solid var(--brand_color);
 }
