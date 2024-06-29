@@ -17,7 +17,7 @@ const numberFormat = (number) => {
 };
 
 const getProducts = async () => {
-    const response = await fetch('assets/js/products.json');
+    const response = await fetch('js/products.json');
     const data = await response.json();
     return data;
 };
@@ -44,7 +44,7 @@ const preencherDadosProduto = (product) => {
     const images = document.querySelectorAll('.produto__detalhes_imagens figure img');
     const imagesArray = Array.from(images);
     imagesArray.map(image => {
-        image.src = `./assets/images/${product.image}`;
+        image.src = `images/${product.image}`;
     });
 
     document.querySelector('.detalhes h4').innerHTML = product.product_name;
@@ -77,7 +77,7 @@ const preencherCard = (card, products) => {
 const geraHtmlCards = (card, product) => {
     card.innerHTML = `
         <figure>
-            <img src="assets/images/${product.image}" alt="${product.product_name}">
+            <img src="images/${product.image}" alt="${product.product_name}">
         </figure>
         <div class="card__produto_detalhes">
             <h4>${product.product_name}</h4>
