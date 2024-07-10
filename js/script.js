@@ -1,6 +1,7 @@
 const botaoVoltar = document.querySelector('.voltar');
 const sectionDetalhesProduto = document.querySelector('.produto__detalhes');
 const sectionProdutos = document.querySelector('.produtos');
+const sectionHero = document.querySelector('.hero');
 
 const ocutarBotaoESecao = () => {
     botaoVoltar.style.display = 'none';
@@ -47,6 +48,7 @@ const preencherDadosProduto = (product) => {
         image.src = `images/${product.image}`;
     });
 
+    document.querySelector('.detalhes span').innerHTML = product.id
     document.querySelector('.detalhes h4').innerHTML = product.product_name;
     document.querySelector('.detalhes h5').innerHTML = product.product_model;
     document.querySelector('.detalhes h6').innerHTML = numberFormat(product.price);
@@ -87,4 +89,24 @@ const geraHtmlCards = (card, product) => {
 
     const listaProdutos = document.querySelector('.lista__produtos');
     listaProdutos.appendChild(card);
-}
+};
+
+
+const btnCarrinho = document.querySelector('.btn__carrinho .icone');
+const sectionCarrinho = document.querySelector('.carrinho');
+
+btnCarrinho.addEventListener('click', () => {
+    sectionCarrinho.style.display = 'block';
+    sectionHero.style.display = 'none';
+    sectionProdutos.style.display = 'none';
+    sectionDetalhesProduto.style.display = 'none';
+});
+
+const btnHome = document.querySelector('.link_home');
+btnHome.addEventListener('click', (event) => {
+    event.preventDefault();
+    sectionCarrinho.style.display = 'none';
+    sectionHero.style.display = 'flex';
+    sectionProdutos.style.display = 'flex';
+    sectionDetalhesProduto.style.display = 'none';
+})
