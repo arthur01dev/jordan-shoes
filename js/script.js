@@ -111,7 +111,35 @@ btnHome.addEventListener('click', (event) => {
     ocutarBotaoESecao();
 });
 
-const btnAddCarrinho = document.querySelector('.btn__add_carrinho');
+const radios = document.querySelectorAll('input[type="radio"]')
+radios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    const label = document.querySelector(`label[for="${radio.id}"]`)
+    label.classList.add('selecionado')
+    console.log(label)
+    radios.forEach(radioAtual => {
+      if (radioAtual !== radio) {
+        const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
+        outroLabel.classList.remove('selecionado')
+      }
+    })
+  })
+})
+
+const resetarSelecao = (radios) => {
+    radios.forEach(radio => {
+        radios.forEach(radioAtual => {
+            if (radioAtual !== radio) {
+                const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
+                outroLabel.classList.remove('selecionado')
+            }
+        })
+    })
+}
+
+const cart = [];
+
+const btnAddCarrinho = document.querySelector('.btn__add_cart');
 btnAddCarrinho.addEventListener('click', () =>{
     const produto = {
         id: document.querySelector('.detalhes span').innerHTML,
@@ -120,5 +148,9 @@ btnAddCarrinho.addEventListener('click', () =>{
         preco: document.querySelector('.detalhes h6').innerHTML,
         tamanho: document.querySelector('input[type="radio"][name="size"]:checked').value
     }
-    console.log(produto)
+    console.log(produto);
+    cart.push(produto);
+    console.log(cart);
 })
+
+
