@@ -108,5 +108,17 @@ btnHome.addEventListener('click', (event) => {
     sectionCarrinho.style.display = 'none';
     sectionHero.style.display = 'flex';
     sectionProdutos.style.display = 'flex';
-    sectionDetalhesProduto.style.display = 'none';
+    ocutarBotaoESecao();
+});
+
+const btnAddCarrinho = document.querySelector('.btn__add_carrinho');
+btnAddCarrinho.addEventListener('click', () =>{
+    const produto = {
+        id: document.querySelector('.detalhes span').innerHTML,
+        nome: document.querySelector('.detalhes h4').innerHTML,
+        modelo: document.querySelector('.detalhes h5').innerHTML,
+        preco: document.querySelector('.detalhes h6').innerHTML,
+        tamanho: document.querySelector('input[type="radio"][name="size"]:checked').value
+    }
+    console.log(produto)
 })
