@@ -39,6 +39,7 @@ generateCard();
 botaoVoltar.addEventListener('click', () => {
     sectionProdutos.style.display = 'flex';
     ocutarBotaoESecao();
+    resetarSelecao(radios);
 });
 
 const preencherDadosProduto = (product) => {
@@ -151,6 +152,10 @@ btnAddCarrinho.addEventListener('click', () =>{
     console.log(produto);
     cart.push(produto);
     console.log(cart);
+
+    ocutarBotaoESecao();
+    sectionCarrinho.style.display = 'block';
+    sectionHero.style.display = 'none';
 })
 
 
