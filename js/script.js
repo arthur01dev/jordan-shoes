@@ -185,6 +185,6 @@ const atualizarCarrinho = (cart) => {
 const numeroItens = document.querySelector('.numero_itens');
 
 const atualizarNumeroItens = () => {
-   numeroItens.innerHTML = cart.length
+    numeroItens.innerHTML = cart.length
 };
 
