@@ -114,17 +114,17 @@ btnHome.addEventListener('click', (event) => {
 
 const radios = document.querySelectorAll('input[type="radio"]')
 radios.forEach(radio => {
-  radio.addEventListener('change', () => {
-    const label = document.querySelector(`label[for="${radio.id}"]`)
-    label.classList.add('selecionado')
-    console.log(label)
-    radios.forEach(radioAtual => {
-      if (radioAtual !== radio) {
-        const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
-        outroLabel.classList.remove('selecionado')
-      }
+    radio.addEventListener('change', () => {
+        const label = document.querySelector(`label[for="${radio.id}"]`)
+        label.classList.add('selecionado')
+        console.log(label)
+        radios.forEach(radioAtual => {
+            if (radioAtual !== radio) {
+                const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
+                outroLabel.classList.remove('selecionado')
+            }
+        })
     })
-  })
 })
 
 const resetarSelecao = (radios) => {
@@ -141,7 +141,7 @@ const resetarSelecao = (radios) => {
 const cart = [];
 
 const btnAddCarrinho = document.querySelector('.btn__add_cart');
-btnAddCarrinho.addEventListener('click', () =>{
+btnAddCarrinho.addEventListener('click', () => {
     const produto = {
         id: document.querySelector('.detalhes span').innerHTML,
         nome: document.querySelector('.detalhes h4').innerHTML,
@@ -156,6 +156,35 @@ btnAddCarrinho.addEventListener('click', () =>{
     ocutarBotaoESecao();
     sectionCarrinho.style.display = 'block';
     sectionHero.style.display = 'none';
-})
 
+    atualizarCarrinho(cart);
+    atualizarNumeroItens();
+});
+
+const corpoTabela = document.querySelector('.carrinho tbody');
+
+const atualizarCarrinho = (cart) => {
+    corpoTabela.innerHTML = "";
+    cart.map(produto => {
+        corpoTabela.innerHTML += `
+            <tr>
+                <td>${produto.id}</td>
+                <td>${produto.nome}</td>
+                <td class="coluna_tamanho">${produto.tamanho}</td>
+                <td class="coluna_preco">${produto.preco}</td>
+                <td class="coluna_apagar">
+                    <span class="material-symbols-outlined" data-id="${produto.id}">
+                        delete
+                    </span>
+                </td>
+            </tr>
+        `
+    })
+}
+
+const numeroItens = document.querySelector('.numero_itens');
+
+const atualizarNumeroItens = () => {
+   numeroItens.innerHTML = cart.length
+};
 
