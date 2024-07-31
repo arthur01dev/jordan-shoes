@@ -1,84 +1,114 @@
-const botaoVoltar = document.querySelector('.voltar');
-const sectionDetalhesProduto = document.querySelector('.produto__detalhes');
-const sectionProdutos = document.querySelector('.produtos');
-const sectionHero = document.querySelector('.hero');
+const botaoVoltar = document.querySelector(".voltar");
+const sectionDetalhesProduto = document.querySelector(".produto__detalhes");
+const sectionProdutos = document.querySelector(".produtos");
+const sectionHero = document.querySelector(".hero");
 
 const ocutarBotaoESecao = () => {
-    botaoVoltar.style.display = 'none';
-    sectionDetalhesProduto.style.display = 'none';
+  botaoVoltar.style.display = "none";
+  sectionDetalhesProduto.style.display = "none";
 };
 
 ocutarBotaoESecao();
 
 const numberFormat = (number) => {
-    return number.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    })
+  return number.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 };
 
 const getProducts = async () => {
-    const response = await fetch('js/products.json');
-    const data = await response.json();
-    return data;
+  const response = await fetch("js/products.json");
+  const data = await response.json();
+  return data;
 };
 
 const generateCard = async () => {
-    const products = await getProducts();
-    products.map(product => {
-        let card = document.createElement('div');
-        card.id = product.id;
-        card.classList.add('card__produto');
-        geraHtmlCards(card, product);
-        preencherCard(card, products);
-    });
+  const products = await getProducts();
+  products.map((product) => {
+    let card = document.createElement("div");
+    card.id = product.id;
+    card.classList.add("card__produto");
+    geraHtmlCards(card, product);
+    preencherCard(card, products);
+  });
 };
 
 generateCard();
 
-botaoVoltar.addEventListener('click', () => {
-    sectionProdutos.style.display = 'flex';
-    ocutarBotaoESecao();
-    resetarSelecao(radios);
+botaoVoltar.addEventListener("click", () => {
+  sectionProdutos.style.display = "flex";
+  ocutarBotaoESecao();
+  resetarSelecao(radios);
 });
 
 const preencherDadosProduto = (product) => {
-    const images = document.querySelectorAll('.produto__detalhes_imagens figure img');
-    const imagesArray = Array.from(images);
-    imagesArray.map(image => {
-        image.src = `images/${product.image}`;
-    });
+  const images = document.querySelectorAll(
+    ".produto__detalhes_imagens figure img"
+  );
+  const imagesArray = Array.from(images);
+  imagesArray.map((image) => {
+    image.src = `images/${product.image}`;
+  });
 
-    document.querySelector('.detalhes span').innerHTML = product.id
-    document.querySelector('.detalhes h4').innerHTML = product.product_name;
-    document.querySelector('.detalhes h5').innerHTML = product.product_model;
-    document.querySelector('.detalhes h6').innerHTML = numberFormat(product.price);
+  document.querySelector(".detalhes span").innerHTML = product.id;
+  document.querySelector(".detalhes h4").innerHTML = product.product_name;
+  document.querySelector(".detalhes h5").innerHTML = product.product_model;
+  document.querySelector(".detalhes h6").innerHTML = numberFormat(
+    product.price
+  );
+
+  const btnAddCarrinho = document.querySelector(".btn__add_cart");
+
+  // Remove event listener antigo, se houver
+  const newBtnAddCarrinho = btnAddCarrinho.cloneNode(true);
+  btnAddCarrinho.parentNode.replaceChild(newBtnAddCarrinho, btnAddCarrinho);
+
+  newBtnAddCarrinho.addEventListener("click", () => {
+    const produto = {
+      id: document.querySelector(".detalhes span").innerHTML,
+      nome: document.querySelector(".detalhes h4").innerHTML,
+      modelo: document.querySelector(".detalhes h5").innerHTML,
+      preco: document.querySelector(".detalhes h6").innerHTML,
+      tamanho: document.querySelector(
+        'input[type="radio"][name="size"]:checked'
+      ).value,
+    };
+    cart.push(produto);
+
+    ocutarBotaoESecao();
+    sectionCarrinho.style.display = "block";
+    sectionHero.style.display = "none";
+
+    atualizarCarrinho(cart);
+    atualizarNumeroItens();
+  });
 };
 
-const details = document.querySelector('details');
+const details = document.querySelector("details");
 
-details.addEventListener('toggle', () => {
-    const summary = document.querySelector('summary');
-    summary.classList.toggle('icone-expandir');
-    summary.classList.toggle('icone-recolher');
+details.addEventListener("toggle", () => {
+  const summary = document.querySelector("summary");
+  summary.classList.toggle("icone-expandir");
+  summary.classList.toggle("icone-recolher");
 });
 
 const preencherCard = (card, products) => {
-    card.addEventListener('click', (e) => {
-        sectionProdutos.style.display = 'none';
-        botaoVoltar.style.display = 'grid';
-        sectionDetalhesProduto.style.display = 'grid';
+  card.addEventListener("click", (e) => {
+    sectionProdutos.style.display = "none";
+    botaoVoltar.style.display = "grid";
+    sectionDetalhesProduto.style.display = "grid";
 
-        const cardClicado = e.currentTarget;
-        const idProduto = cardClicado.id;
-        const produtoClicado = products.find(product => product.id == idProduto);
+    const cardClicado = e.currentTarget;
+    const idProduto = cardClicado.id;
+    const produtoClicado = products.find((product) => product.id == idProduto);
 
-        preencherDadosProduto(produtoClicado);
-    });
+    preencherDadosProduto(produtoClicado);
+  });
 };
 
 const geraHtmlCards = (card, product) => {
-    card.innerHTML = `
+  card.innerHTML = `
         <figure>
             <img src="images/${product.image}" alt="${product.product_name}">
         </figure>
@@ -88,85 +118,66 @@ const geraHtmlCards = (card, product) => {
         </div>
         <h6>${numberFormat(product.price)}</h6>`;
 
-    const listaProdutos = document.querySelector('.lista__produtos');
-    listaProdutos.appendChild(card);
+  const listaProdutos = document.querySelector(".lista__produtos");
+  listaProdutos.appendChild(card);
 };
 
+const btnCarrinho = document.querySelector(".btn__carrinho .icone");
+const sectionCarrinho = document.querySelector(".carrinho");
 
-const btnCarrinho = document.querySelector('.btn__carrinho .icone');
-const sectionCarrinho = document.querySelector('.carrinho');
-
-btnCarrinho.addEventListener('click', () => {
-    sectionCarrinho.style.display = 'block';
-    sectionHero.style.display = 'none';
-    sectionProdutos.style.display = 'none';
-    sectionDetalhesProduto.style.display = 'none';
+btnCarrinho.addEventListener("click", () => {
+  sectionCarrinho.style.display = "block";
+  sectionHero.style.display = "none";
+  sectionProdutos.style.display = "none";
+  sectionDetalhesProduto.style.display = "none";
 });
 
-const btnHome = document.querySelector('.link_home');
-btnHome.addEventListener('click', (event) => {
-    event.preventDefault();
-    sectionCarrinho.style.display = 'none';
-    sectionHero.style.display = 'flex';
-    sectionProdutos.style.display = 'flex';
-    ocutarBotaoESecao();
+const btnHome = document.querySelector(".link_home");
+btnHome.addEventListener("click", (event) => {
+  event.preventDefault();
+  sectionCarrinho.style.display = "none";
+  sectionHero.style.display = "flex";
+  sectionProdutos.style.display = "flex";
+  ocutarBotaoESecao();
 });
 
-const radios = document.querySelectorAll('input[type="radio"]')
-radios.forEach(radio => {
-    radio.addEventListener('change', () => {
-        const label = document.querySelector(`label[for="${radio.id}"]`)
-        label.classList.add('selecionado')
-        console.log(label)
-        radios.forEach(radioAtual => {
-            if (radioAtual !== radio) {
-                const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
-                outroLabel.classList.remove('selecionado')
-            }
-        })
-    })
-})
+const radios = document.querySelectorAll('input[type="radio"]');
+radios.forEach((radio) => {
+  radio.addEventListener("change", () => {
+    const label = document.querySelector(`label[for="${radio.id}"]`);
+    label.classList.add("selecionado");
+    radios.forEach((radioAtual) => {
+      if (radioAtual !== radio) {
+        const outroLabel = document.querySelector(
+          `label[for="${radioAtual.id}"]`
+        );
+        outroLabel.classList.remove("selecionado");
+      }
+    });
+  });
+});
 
 const resetarSelecao = (radios) => {
-    radios.forEach(radio => {
-        radios.forEach(radioAtual => {
-            if (radioAtual !== radio) {
-                const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
-                outroLabel.classList.remove('selecionado')
-            }
-        })
-    })
-}
+  radios.forEach((radio) => {
+    radios.forEach((radioAtual) => {
+      if (radioAtual !== radio) {
+        const outroLabel = document.querySelector(
+          `label[for="${radioAtual.id}"]`
+        );
+        outroLabel.classList.remove("selecionado");
+      }
+    });
+  });
+};
 
 const cart = [];
 
-const btnAddCarrinho = document.querySelector('.btn__add_cart');
-btnAddCarrinho.addEventListener('click', () => {
-    const produto = {
-        id: document.querySelector('.detalhes span').innerHTML,
-        nome: document.querySelector('.detalhes h4').innerHTML,
-        modelo: document.querySelector('.detalhes h5').innerHTML,
-        preco: document.querySelector('.detalhes h6').innerHTML,
-        tamanho: document.querySelector('input[type="radio"][name="size"]:checked').value
-    }
-    console.log(produto);
-    cart.push(produto);
-    console.log(cart);
-
-    ocutarBotaoESecao();
-    sectionCarrinho.style.display = 'block';
-    sectionHero.style.display = 'none';
-
-    atualizarCarrinho(cart);
-    atualizarNumeroItens();
-});
-
-const corpoTabela = document.querySelector('.carrinho tbody');
+const corpoTabela = document.querySelector(".carrinho tbody");
 
 const atualizarCarrinho = (cart) => {
-    corpoTabela.innerHTML = "";
-    cart.map(produto => {
-        corpoTabela.innerHTML += `
+  corpoTabela.innerHTML = "";
+  cart.map((produto) => {
+    corpoTabela.innerHTML += `
             <tr>
                 <td>${produto.id}</td>
                 <td>${produto.nome}</td>
@@ -178,13 +189,46 @@ const atualizarCarrinho = (cart) => {
                     </span>
                 </td>
             </tr>
-        `
-    })
-}
+        `;
+  });
 
-const numeroItens = document.querySelector('.numero_itens');
+  const total = cart.reduce((valorAcumulado, item) => {
+    return (
+      valorAcumulado +
+      parseFloat(
+        item.preco.replace("R$&nbsp;", "").replace(".", "").replace(",", ".")
+      )
+    );
+  }, 0);
 
-const atualizarNumeroItens = () => {
-    numeroItens.innerHTML = cart.length
+  document.querySelector(".coluna_total").innerHTML = numberFormat(total);
+
+  acaoBotaoApagar();
 };
 
+const numeroItens = document.querySelector(".numero_itens");
+numeroItens.style.display = "none";
+const atualizarNumeroItens = () => {
+  cart.length > 0
+    ? (numeroItens.style.display = "block")
+    : (numeroItens.style.display = "none");
+  numeroItens.innerHTML = cart.length;
+};
+
+const acaoBotaoApagar = () => {
+  const botaoApagar = document.querySelectorAll(".coluna_apagar span");
+
+  botaoApagar.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const id = botao.getAttribute("data-id");
+      const posicao = cart.findIndex((item) => item.id == id);
+      cart.splice(posicao, id);
+      atualizarCarrinho(cart);
+    });
+  });
+
+  atualizarNumeroItens();
+};
+
+const spanId = document.querySelector(".detalhes span");
+spanId.style.display = "none";
